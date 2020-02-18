@@ -38,6 +38,12 @@ def call() {
       }
 
       stage('Verify Branch Name') {
+        steps {
+          verifyBranchName() 
+        }
+      }
+
+      stage('Unit Test') {
         agent {
           kubernetes {
             containerTemplate {
@@ -48,12 +54,6 @@ def call() {
             }
           }
         }
-        steps {
-          verifyBranchName() 
-        }
-      }
-
-      stage('Unit Test') {
         steps {
           unitTest()
         }
