@@ -78,7 +78,7 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-    stage('Python Unit Testing')  
+    stage('Python Unit Testing') {
       agent {
         kubernetes {
           containerTemplate {
