@@ -89,15 +89,13 @@ def unitTest(Map customSettings = [:]) {
   case("python-default"):
     pipeline {
       stage('Python Unit Testing') {
-        steps {
-          container(settings.unitTestContainerName) {
-            checkout([
-              $class: 'GitSCM',
-              branches: [[name: settings.unitTestGitBranch]],
-              userRemoteConfigs: [[url: settings.unitTestGitUrl]]
-            ])
-            sh "make -f ${settings['unitTestMakefile']} test"
-          }
+        container(settings.unitTestContainerName) {
+          checkout([
+            $class: 'GitSCM',
+            branches: [[name: settings.unitTestGitBranch]],
+            userRemoteConfigs: [[url: settings.unitTestGitUrl]]
+          ])
+          sh "make -f ${settings['unitTestMakefile']} test"
         }
       }
     }
