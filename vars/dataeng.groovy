@@ -2,6 +2,16 @@
 
 def printenv() {
   pipeline {
+    agent {
+      kubernetes {
+        containerTemplate {
+          image 'alpine'
+          name 'alpine'
+          ttyEnabled true
+          command 'cat'
+        }
+      }
+    }
     stages {
       stage('Print Env') {
         steps {
