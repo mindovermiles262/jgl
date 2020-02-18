@@ -76,7 +76,7 @@ def verifyBranchName(String regexPattern = "(^(origin/)?master\$|^feature/.*|^de
 // argument for custom settings
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
-    unitTestGitUrl: env.GIT_URL
+    unitTestGitUrl: env.GIT_URL,
     unitTestGitBranch: env.GIT_BRANCH,
     unitTestMakefile: "Makefile",
     unitTestLanguage: "python",
