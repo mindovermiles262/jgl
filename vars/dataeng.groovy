@@ -1,10 +1,24 @@
 #!/usr/bin/env groovy
 
 def printenv() {
-  stage('Print Env') {
-    step {
-      script {
-        sh 'printenv'
+  pipeline {
+    agent {
+      kubernetes {
+        containerTemplate {
+          image 'alpine'
+          name 'alpine'
+          ttyEnabled true
+          command 'cat'
+        }
+      }
+    }
+    stages {
+      stage('Print Env') {
+        step {
+          script {
+            sh 'printenv'
+          }
+        }
       }
     }
   }
