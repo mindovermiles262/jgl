@@ -14,7 +14,7 @@ def call() {
     }
     stages {
       stage('Print Env') {
-        step {
+        steps {
           script {
             sh 'printenv'
           }
