@@ -28,10 +28,6 @@ def call() {
         }
       }
 
-      stage('Unit Testing') {
-        // do something
-      }
-
     } // Close stages{}
   }
 }
