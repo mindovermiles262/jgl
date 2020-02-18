@@ -77,7 +77,7 @@ def unitTest(Map customSettings = [:]) {
     unitTestMakefile: "Makefile",
     unitTestLanguage: "python-default",
     unitTestContainerImage: "mindovermiles262/pytest:0.1.2",
-    unitTestContainerName: "dataeng-pytest-${env.GIT_COMMIT[0..5]}
+    unitTestContainerName: "dataeng-pytest-${env.GIT_COMMIT[0..5]}"
   ]
 
   settings = overwriteMap(defaultSettings, customSettings)
