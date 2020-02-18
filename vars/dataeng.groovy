@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def printenv() {
+def call() {
   pipeline {
     agent {
       kubernetes {
