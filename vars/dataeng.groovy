@@ -79,17 +79,17 @@ def unitTest(Map customSettings = [:]) {
   switch(settings.unitTestLanguage){
   case("python-default"):
     pipeline {
-      stage('Python Unit Testing') {
-        agent {
-          kubernetes {
-            containerTemplate {
-              image settings.unitTestContainerImage
-              name settings.unitTestContainerName
-              ttyEnabled true
-              command 'cat'
-            }
+      agent {
+        kubernetes {
+          containerTemplate {
+            image settings.unitTestContainerImage
+            name settings.unitTestContainerName
+            ttyEnabled true
+            command 'cat'
           }
         }
+      }
+      stage('Python Unit Testing') {
         steps {
           container(settings.unitTestContainerName) {
             checkout([
