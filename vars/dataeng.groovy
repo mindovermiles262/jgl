@@ -1,12 +1,13 @@
 #!/usr/bin/env groovy
 
 def printenv() {
-pipeline {
-  stages {
-    stage('Print Env') {
-      steps {
-        script {
-          sh 'printenv'
+  pipeline {
+    stages {
+      stage('Print Env') {
+        steps {
+          script {
+            sh 'printenv'
+          }
         }
       }
     }
