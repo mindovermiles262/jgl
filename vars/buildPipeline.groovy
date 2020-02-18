@@ -4,7 +4,6 @@
 // Purpose:   Builds a docker image
 
 def call() {
-  @Library('prod-jgl') _
   pipeline {
     agent {
       kubernetes {
