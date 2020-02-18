@@ -44,12 +44,6 @@ def call() {
       }
 
       stage('Unit Test') {
-        agent {
-          kubernetes {
-            containerTemplate {
-            }
-          }
-        }
         steps {
           unitTest()
         }
