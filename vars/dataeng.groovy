@@ -63,16 +63,16 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
 
 // Runs 'make test' on specified git repository. Defaults to a python testing
 // environment. Pass a map as the second argument for custom settings
-def unitTest(String unitTestGitUrl,
-             Map customSettings = [:]) {
+def unitTest(String unitTestGitUrl, Map customSettings = [:]) {
   defaultSettings = [
-    unitTestGitBranch: "*/master",
+    unitTestGitBranch: env.GIT_BRANCH,
     unitTestMakefile: "Makefile",
     unitTestLanguage: "python",
     unitTestContainer: "unit-test-python"
   ]
+
   settings = overwriteMap(defaultSettings, customSettings)
-  // settings.each{ e -> println("$e.key => $e.value")}
+
   switch(settings['unitTestLanguage']){
   case("python"):
     pipeline {
@@ -83,6 +83,7 @@ def unitTest(String unitTestGitUrl,
       }
     }
   default:
+    // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
   }
 }
