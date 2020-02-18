@@ -28,6 +28,22 @@ def call() {
         }
       }
 
+      stage('Unit Test') {
+        agent {
+          kubernetes {
+            containerTemplate {
+              image 'mindovermiles262/pytest:0.1.2'
+              name 'unit-test-python'
+              ttyEnabled true
+              command 'cat'
+            }
+          }
+        }
+        steps {
+          unitTest(env.GIT_URL)
+        }
+      }
+
     } // Close stages{}
   }
 }
