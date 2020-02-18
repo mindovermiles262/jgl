@@ -20,7 +20,7 @@ pipeline {
     stage('verify branch') {
       steps {
         script {
-          dataeng.verifyBranchName()
+          dataeng.verifyBranchName("(^(origin/)?master\$|^feature/.*|^develop\$)")
         }
       }
     }
