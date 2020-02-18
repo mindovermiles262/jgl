@@ -2,7 +2,7 @@
 
 def printenv() {
   stage('Print Env') {
-    steps {
+    step {
       script {
         sh 'printenv'
       }
