@@ -1,79 +1,26 @@
 #!/usr/bin/env groovy
 
-// Filename:  dataeng.groovy
-// Purpose:   Helper methods for DataEng team
-// Usage:     Inside of project repository, include Jenkinsfile to pull this
-//            library and run 'dataeng()'
-//
-// Usage Example:
-//            library identifier: 'prod-jgl@master', retriever: modernscm(
-//              [$class: 'gitscmsource', remote: 'https://github.com/mindovermiles262/jgl'])
-//            dataeng()
-// Methods:
-//   call() => Runs entire build pipeline
-//   verifyBranchName() => Checks that branch is 'master', 'feature/*' or 'develop'. Fails if not
-//   unitTest() => Runs 'make test' inside of supplied container
+/*
+This file, dataeng.groovy, is a shared helper library for Jenkins. Inside contains
+all of the helper functions for simplifying DataEngineering's pipelines.
 
+You can call a function from this library by simply calling dataeng.methodName()
+inside of the pipeline file.
+*/
 
-def call() {
-  pipeline {
-    agent {
-      kubernetes {
-        containerTemplate {
-          image 'alpine'
-          name 'alpine'
-          ttyEnabled true
-          command 'cat'
-        }
-      }
-    }
-    stages {
-
-      stage('Print Env') {
-        steps {
-          script {
-            sh 'printenv'
-          }
-        }
-      }
-
-      stage('Verify Branch Name') {
-        steps {
-          verifyBranchName() 
-        }
-      }
-
-      stage('Unit Test') {
-        agent {
-          kubernetes {
-            containerTemplate {
-              image 'mindovermiles262/pytest:0.2.0'
-              name 'dataeng-pytest'
-              command 'cat'
-              ttyEnabled true
-            }
-          }
-        }
-        steps {
-          unitTest()
-        }
-      }
-
-    } // Close stages{} block
-  }
-}
-
-def verifyBranchName(String regexPattern = "(^(origin/)?master\$|^feature/.*|^develop\$)") {
-  if(env.GIT_BRANCH ==~ /${regexPattern}/) {
-    println "Branch ${env.GIT_BRANCH} is valid"
+// Checks if branch name is 'master', 'feature/*', or 'develop'. Fails build if not.
+def verifyBranchName(String regexPattern = "(^master\$|^feature/.*|^develop\$)") {
+  if(env.BRANCH_NAME ==~ /${regexPattern}/) {
+    println "Branch ${env.BRANCH_NAME} is valid"
   } else {
-    error("[!] Branch ${env.GIT_BRANCH} is invalid")
+    error("[FAILED] Branch ${env.BRANCH_NAME} is INVALID")
   }
 }
 
 
-// Runs 'make test' on specified git repository. Pass a map as the second 
-// argument to change default settings
+// Runs unit testing on codebase. 
+// By default, runs 'make test' from the project's root directory inside a
+// sandboxed testing container.
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
     unitTestGitUrl: env.GIT_URL,
@@ -102,7 +49,7 @@ def unitTest(Map customSettings = [:]) {
 }
 
 
-// Given two maps, append or overwrite the second into the first
+// Given two maps, append or overwrite the second into the first. Helper function.
 def overwriteMap(Map defaultSettings, Map customSettings) {
   customSettings.each{ entry -> defaultSettings[entry.key] = entry.value }
   return defaultSettings
