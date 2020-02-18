@@ -38,6 +38,16 @@ def call() {
       }
 
       stage('Verify Branch Name') {
+        agent {
+          kubernetes {
+            containerTemplate {
+              image 'alpine/flake8'
+              name 'dataeng-pytest'
+              command 'cat'
+              ttyEnabled true
+            }
+          }
+        }
         steps {
           verifyBranchName() 
         }
@@ -70,7 +80,6 @@ def unitTest(Map customSettings = [:]) {
     unitTestGitBranch: env.GIT_BRANCH,
     unitTestMakefile: "Makefile",
     unitTestLanguage: "python-default",
-    unitTestContainerImage: "mindovermiles262/pytest:0.1.2",
     unitTestContainerName: "dataeng-pytest"
   ]
 
@@ -79,16 +88,6 @@ def unitTest(Map customSettings = [:]) {
   switch(settings.unitTestLanguage){
   case("python-default"):
     pipeline {
-      agent {
-        kubernetes {
-          containerTemplate {
-            image settings.unitTestContainerImage
-            name settings.unitTestContainerName
-            ttyEnabled true
-            command 'cat'
-          }
-        }
-      }
       stage('Python Unit Testing') {
         steps {
           container(settings.unitTestContainerName) {
