@@ -28,7 +28,9 @@ def call() {
 
       stage('Verify Branch Name') {
         steps {
-          dataeng.verifyBranchName() 
+          script {
+            dataeng.verifyBranchName()
+          }
         }
       }
 
@@ -44,7 +46,9 @@ def call() {
           }
         }
         steps {
-          dataeng.unitTest()
+          script {
+            dataeng.unitTest()
+          }
         }
       }
 
