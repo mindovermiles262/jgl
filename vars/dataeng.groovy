@@ -78,7 +78,7 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-    pipeline {
+    stage('Python Unit Testing')  
       agent {
         kubernetes {
           containerTemplate {
@@ -89,13 +89,15 @@ def unitTest(Map customSettings = [:]) {
           }
         }
       }
-      container(settings.unitTestContainerName) {
-        checkout([
-          $class: 'GitSCM',
-          branches: [[name: settings.unitTestGitBranch]],
-          userRemoteConfigs: [[url: settings.unitTestGitUrl]]
-        ])
-        sh "make -f ${settings['unitTestMakefile']} test"
+      steps {
+        container(settings.unitTestContainerName) {
+          checkout([
+            $class: 'GitSCM',
+            branches: [[name: settings.unitTestGitBranch]],
+            userRemoteConfigs: [[url: settings.unitTestGitUrl]]
+          ])
+          sh "make -f ${settings['unitTestMakefile']} test"
+        }
       }
     }
   default:
