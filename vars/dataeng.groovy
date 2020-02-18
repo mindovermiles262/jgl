@@ -13,6 +13,7 @@ def call() {
       }
     }
     stages {
+
       stage('Print Env') {
         steps {
           script {
@@ -20,7 +21,14 @@ def call() {
           }
         }
       }
-    }
+
+      stage('Verify Branch Name') {
+        steps {
+          verifyBranchName() 
+        }
+      }
+
+    } // Close stages{}
   }
 }
 
