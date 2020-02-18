@@ -11,9 +11,9 @@ inside of the pipeline file.
 // Checks if branch name is 'master', 'feature/*', or 'develop'. Fails build if not.
 def verifyBranchName(String regexPattern = "(^master\$|^feature/.*|^develop\$)") {
   if(env.GIT_BRANCH ==~ /${regexPattern}/) {
-    println "Branch ${env.BRANCH_NAME} is valid"
+    println "Branch ${env.GIT_BRANCH} is valid"
   } else {
-    error("[FAILED] Branch ${env.BRANCH_NAME} is INVALID")
+    error("[FAILED] Branch ${env.GIT_BRANCH} is INVALID")
   }
 }
 
