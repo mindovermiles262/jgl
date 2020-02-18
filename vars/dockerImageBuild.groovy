@@ -14,6 +14,14 @@ pipeline {
   }
 
   stages {
+    // List ENV vars for easier debugging
+    stage('Get ENV') {
+      steps {
+        script {
+          sh 'printenv'
+        }
+      }
+    }
 
     // immediately fail the job when someone is working
     // with a branch we know nothing about.
