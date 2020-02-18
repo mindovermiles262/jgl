@@ -47,7 +47,7 @@ def call() {
         agent {
           kubernetes {
             containerTemplate {
-              image 'alpine/flake8'
+              image 'mindovermiles262/pytest:0.2.0'
               name 'dataeng-pytest'
               command 'cat'
               ttyEnabled true
