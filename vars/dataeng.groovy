@@ -12,7 +12,7 @@
 // Methods:
 //   call() => Runs entire build pipeline
 //   verifyBranchName() => Checks that branch is 'master', 'feature/*' or 'develop'. Fails if not
-//   unitTest( env.GIT_URL,   ) 
+//   unitTest() => Runs 'make test' inside of supplied container
 
 
 def call() {
@@ -47,10 +47,6 @@ def call() {
         agent {
           kubernetes {
             containerTemplate {
-              image 'mindovermiles262/pytest:0.1.2'
-              name 'unit-test-python'
-              ttyEnabled true
-              command 'cat'
             }
           }
         }
@@ -73,22 +69,33 @@ def verifyBranchName(String regexPattern = "(^(origin/)?master\$|^feature/.*|^de
 
 
 // Runs 'make test' on specified git repository. Pass a map as the second 
-// argument for custom settings
+// argument to change default settings
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
     unitTestGitUrl: env.GIT_URL,
     unitTestGitBranch: env.GIT_BRANCH,
     unitTestMakefile: "Makefile",
-    unitTestLanguage: "python",
-    unitTestContainer: "unit-test-python"
+    unitTestLanguage: "python-default",
+    unitTestContainerImage: "mindovermiles262/pytest:0.1.2",
+    unitTestContainerName: "dataeng-pytest-${env.GIT_COMMIT[0..5]}
   ]
 
   settings = overwriteMap(defaultSettings, customSettings)
 
   switch(settings.unitTestLanguage){
-  case("python"):
+  case("python-default"):
     pipeline {
-      container(settings.unitTestContainer) {
+      agent {
+        kubernetes {
+          containerTemplate {
+            image settings.unitTestContainerImage
+            name settings.unitTestContainerName
+            ttyEnabled true
+            command 'cat'
+          }
+        }
+      }
+      container(settings.unitTestContainerName) {
         checkout([
           $class: 'GitSCM',
           branches: [[name: settings.unitTestGitBranch]],
