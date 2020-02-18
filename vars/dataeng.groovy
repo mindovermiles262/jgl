@@ -79,7 +79,6 @@ def unitTest(Map customSettings = [:]) {
   switch(settings.unitTestLanguage){
   case("python-default"):
     pipeline {
-      stages {
       stage('Python Unit Testing') {
         agent {
           kubernetes {
@@ -101,7 +100,6 @@ def unitTest(Map customSettings = [:]) {
             sh "make -f ${settings['unitTestMakefile']} test"
           }
         }
-      }
       }
     }
   default:
