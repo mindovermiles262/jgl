@@ -36,7 +36,7 @@ def call() {
   }
 }
 
-def verifyBranchName(String regexPattern = "(^(origin\/)?master\$|^feature/.*|^develop\$)") {
+def verifyBranchName(String regexPattern = "(^(origin/)?master\$|^feature/.*|^develop\$)") {
   if(env.GIT_BRANCH ==~ /${regexPattern}/) {
     println "Branch ${env.GIT_BRANCH} is valid"
   } else {
