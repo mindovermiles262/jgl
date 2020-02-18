@@ -88,7 +88,7 @@ def unitTest(Map customSettings = [:]) {
   switch(settings.unitTestLanguage){
   case("python-default"):
     pipeline {
-      stage('Python Unit Testing') {
+      steps{
         container(settings.unitTestContainerName) {
           checkout([
             $class: 'GitSCM',
