@@ -87,17 +87,25 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-    pipeline {
-      step {
-        container(settings.unitTestContainerName) {
-          checkout([
-            $class: 'GitSCM',
-            branches: [[name: settings.unitTestGitBranch]],
-            userRemoteConfigs: [[url: settings.unitTestGitUrl]]
-          ])
-          sh "make -f ${settings['unitTestMakefile']} test"
-        }
-      }
+    // pipeline {
+    //   stage('Python Unit Test') {
+    //     container(settings.unitTestContainerName) {
+    //       checkout([
+    //         $class: 'GitSCM',
+    //         branches: [[name: settings.unitTestGitBranch]],
+    //         userRemoteConfigs: [[url: settings.unitTestGitUrl]]
+    //       ])
+    //       sh "make -f ${settings['unitTestMakefile']} test"
+    //     }
+    //   }
+    // }
+    script {
+      checkout([
+        $class: 'GitSCM',
+        branches: [[name: settings.unitTestGitBranch]],
+        userRemoteConfigs: [[url: settings.unitTestGitUrl]]
+      ])
+      sh "make -f ${settings['unitTestMakefile']} test"
     }
   default:
     // Fail if not 'unitTestLanguage' is not supported
