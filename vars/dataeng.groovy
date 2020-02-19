@@ -70,7 +70,7 @@ def createBuildProps() {
   buildProps.gcpProjectId = 'kubicia'
   buildProps.repoName = env.JOB_BASE_NAME
   buildProps.imageTag = env.BUILD_ID
-  buildProps.gcpCredentials = credentials("kubicia-bced947dd5fe.json")
+  buildProps.gcpCredentials = credentials("kubicia-text")
   buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   return buildProps
 }
