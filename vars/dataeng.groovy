@@ -77,6 +77,8 @@ def createBuildProps() {
 }
 
 def gcloudAuth(){
+  println "${buildProps.gcpCredentials}"
+  println "${buildProps.creds}"
   sh "gcloud auth activate-service-account --key-file=${buildProps.gcpCredentials} --project=${buildProps.gcpProjectId}"
 }
 
