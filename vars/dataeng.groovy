@@ -79,7 +79,7 @@ def createBuildProps() {
 def gcloudAuth(){
   try {
     sh "gcloud auth activate-service-account --key-file=${buildProps.gcpCredentials} --project=${buildProps.gcpProjectId}"
-  catch {
+  catch (Exception e) {
     println "Catch:"
     sh "gcloud auth activate-service-account --key-file=${buildProps.creds} --project=${buildProps.gcpProjectId}"
   }
