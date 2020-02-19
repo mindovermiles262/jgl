@@ -61,7 +61,7 @@ pipeline {
     steps {
       script {
         dataeng.helloWorld()
-        def localSettings = readYaml "resources/dataeng-props.yml"
+        def localSettings = readYaml(file: "resources/dataeng-props.yml")
         dataeng.configLocal(localSettings)
       }
     }
