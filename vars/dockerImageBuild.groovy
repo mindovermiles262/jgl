@@ -60,15 +60,9 @@ pipeline {
   stage('Build image') {
     steps {
       script {
-        dataeng.helloWorld()
         def localSettings = readYaml(file: "resources/dataeng-props.yml")
-        def sendSettings = localSettings['environments']['test']['default']
-        println "${sendSettings.getClass()}"
-        dataeng.configLocal(sendSettings)
-        dataeng.configLocalLocal(localSettings)
+        dataeng.configLocal(localSettings)
       }
     }
   }
-  }
-}
 }
