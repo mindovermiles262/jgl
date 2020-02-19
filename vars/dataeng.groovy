@@ -86,6 +86,3 @@ def configLocalLocal(Map yamlConfig,
   return props
 }
 
-def helloWorld() {
-  println "Hello World"
-}
