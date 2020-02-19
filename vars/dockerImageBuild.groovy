@@ -63,7 +63,7 @@ pipeline {
         def props = dataeng.configLocal(
           'test',
           'default',
-          'https://raw.githubusercontent.com/mindovermiles262/jenkins-app/master/resources/dataeng-props.yml')
+          './resources/dataeng-props.yml')
         props.each{ item -> println "${item.key} => ${item.value}"}
       }
     }
