@@ -63,6 +63,7 @@ pipeline {
         sh 'ls -l'
         sh 'cat resources/dataeng-props.yml'
         def localYaml = libraryResource 'dataeng-props.yml'
+        println "${localYaml.toString()}"
         def props = dataeng.configLocal(localYaml)
         props.each{ item -> println "${item.key} => ${item.value}"}
       }
