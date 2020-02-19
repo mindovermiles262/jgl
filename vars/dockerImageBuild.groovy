@@ -76,7 +76,7 @@ pipeline {
         stage('Build Image') {
           steps('Build Image') {
             script {
-              println "${buildProps.containerImageName}"
+              dataeng.buildDockerImage()
             }
           }
         }

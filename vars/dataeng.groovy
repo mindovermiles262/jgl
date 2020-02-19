@@ -73,3 +73,12 @@ def createBuildProps() {
   buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   return buildProps
 }
+
+def buildDockerImage() {
+  println "${buildProps.containerImageName}"
+  sh 'ls -l'
+  sh """
+  cd ./lib/
+  gcloud --quiet --project ${buildProps.gcpProjectId} builds submit --tag ${buildProps.containerImageName}
+  """
+}
