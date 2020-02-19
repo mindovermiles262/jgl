@@ -55,10 +55,10 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
   return defaultSettings
 }
 
-/*
-def configLocal(String envName = 'test',
-                String namespace = 'default',
-                String yamlFile = 'dataeng-props.yml') {
+
+def configLocal(String yamlResource,
+                String envName = 'test',
+                String namespace = 'default') {
   def propsFile = libraryResource yamlFile
   def config = readYaml text: propsFile
   def props = [:]
@@ -67,19 +67,4 @@ def configLocal(String envName = 'test',
   }
   return props
 }
-*/
 
-def configLocal(String loadFile = "./resources/dataeng-props.yml") {
-  println "${workspace}"
-  dh = new File('.')
-  dh.eachFileRecurse {
-    println it
-  }
-  def f = readYaml (text: loadFile)
-  def props = [:]
-  f['environments']['test']['default'].each {
-    props[it.key] = it.value
-  }
-  return props
-  
-}

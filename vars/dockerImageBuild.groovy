@@ -60,8 +60,8 @@ pipeline {
   stage('Build image') {
     steps {
       script {
-        sh "ls -l"
-        def props = dataeng.configLocal()
+        def localYaml = libraryResource 'dataeng-props.yml'
+        def props = dataeng.configLocal(localYaml)
         props.each{ item -> println "${item.key} => ${item.value}"}
       }
     }
