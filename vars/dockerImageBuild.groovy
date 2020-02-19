@@ -76,6 +76,7 @@ pipeline {
         stage('Build Image') {
           steps('Build Image') {
             script {
+              dataeng.gcloudAuth()
               dataeng.buildDockerImage()
             }
           }
