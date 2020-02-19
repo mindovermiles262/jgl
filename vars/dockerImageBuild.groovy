@@ -1,4 +1,6 @@
 def call(){
+  // Emtpy map for pipeline parameters
+  def props = [:]
 
   pipeline {
 
@@ -54,11 +56,11 @@ def call(){
       //   }
       // }
 
-      stage('Build image') {
+      stage('Import Properties') {
         steps {
           script {
             def localSettings = readYaml(file: "resources/dataeng-props.yml")
-            def props = dataeng.configLocal(localSettings)
+            props = dataeng.configLocal(localSettings)
             println "${props.getClass()}" 
             println "${props.repo}"
           }
