@@ -79,7 +79,7 @@ def configLocalLocal(Map yamlConfig,
                      String namespace = 'default') {
   println "In CLL: ${yamlConfig.getClass()}"
   def props = [:]
-  yamlConfig.['environments'][sdlc][namespace]each {
+  yamlConfig['environments'][sdlc][namespace].each {
     println "${it.key} => ${it.value}"
     props[it.key] = it.value
   }
