@@ -25,6 +25,7 @@ pipeline {
 
     // immediately fail the job when someone is working
     // with a branch we know nothing about.
+/*
     stage('verify branch') {
       steps {
         script {
@@ -32,6 +33,7 @@ pipeline {
         }
       }
     }
+*/
 
     // Runs 'make test' to execute unit testing. Add an optional map config
     // to dataeng.unitTest() to change default values.
