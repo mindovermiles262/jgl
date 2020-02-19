@@ -14,6 +14,13 @@ pipeline {
   }
 
   stages {
+      stage('Set Build Properties') {
+        steps {
+          script {
+            dataeng.createBuildProps()
+          }
+        }
+      }
     // List ENV vars for easier debugging
     // stage('Get ENV') {
     //   steps {
@@ -69,7 +76,7 @@ pipeline {
         stage('Build Image') {
           steps('Build Image') {
             script {
-              dataeng.buildDockerImage()
+              println "${buildProps.containerImageName}"
             }
           }
         }

@@ -55,6 +55,21 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
   return defaultSettings
 }
 
-def buildDockerImage() {
-  println "Hello World"
+def createBuildProps() {
+  // create the initial map from the local buildProps.yaml file if it exists
+  // we assume the following properties come from buildProps.yaml:
+  // * imageVersion
+  def buildPropsFileName = "buildProps.yaml"
+  def buildPropsFile = new File(buildPropsFileName)
+  if (buildPropsFile.exists()) {
+    buildProps = readYaml file: buildPropsFileName
+  } else {
+    buildProps = [:]
+  }
+
+  buildProps.gcpProjectId = 'kubicia'
+  buildProps.repoName = env.JOB_BASE_NAME
+  buildProps.imageTag = env.BUILD_ID
+  buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
+
 }
