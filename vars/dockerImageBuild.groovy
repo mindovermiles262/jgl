@@ -65,6 +65,7 @@ pipeline {
         def sendSettings = localSettings['environments']['test']['default']
         println "${sendSettings.getClass()}"
         dataeng.configLocal(sendSettings)
+        dataeng.configLocalLocal(localSettings)
       }
     }
   }
