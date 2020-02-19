@@ -61,7 +61,10 @@ pipeline {
     steps {
       script {
         def localSettings = readYaml(file: "resources/dataeng-props.yml")
-        dataeng.configLocal(localSettings)
+        def props = dataeng.configLocal(localSettings)
+        props.each {
+          println "${it.key} => ${it.value}"
+        }
       }
     }
   }
