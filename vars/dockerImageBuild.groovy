@@ -5,8 +5,8 @@ pipeline {
   agent {
     kubernetes {
       containerTemplate {
-        name 'gcloud'
-        image 'google/cloud-sdk:267.0.0-alpine'
+        name 'alp'
+        image 'alpine'
         ttyEnabled true
         command 'cat'
       }
@@ -67,7 +67,7 @@ pipeline {
       }
       steps('Build Image') {
         script {
-          sh "echo Hello World"
+          sh "docker info"
         }
       }
     }
