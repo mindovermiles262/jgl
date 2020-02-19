@@ -56,7 +56,7 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
 }
 
 
-def configLocal(String yamlConfig
+def configLocal(String yamlConfig,
                 String envName = 'test',
                 String namespace = 'default') {
   // def propsFile = libraryResource yamlFile
