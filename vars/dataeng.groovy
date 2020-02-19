@@ -64,5 +64,6 @@ def configLocal(String envName = 'test',
   config['environments'][namespace][envName].each {
     props[it.key] = it.value
   }
+  props.each(e -> println "${e.key} => ${e.value}")
   return props
 }
