@@ -60,6 +60,7 @@ def configLocal(String envName = 'test',
                 String yamlFile = 'dataeng-props.yml') {
   // def propsFile = libraryResource yamlFile
   def propsFile = load(yamlFile)
+  println "${propsFile}"
   def config = readYaml text: propsFile
   def props = [:]
   config['environments'][envName][namespace].each {
