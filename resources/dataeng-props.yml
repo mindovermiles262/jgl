@@ -1,4 +1,0 @@
-environments:
-  test:
-    default:
-      repo: "jgl"

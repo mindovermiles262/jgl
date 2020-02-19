@@ -59,10 +59,9 @@ def call(){
       stage('Import Properties') {
         steps {
           script {
+            // load yaml file from app repository
             def localSettings = readYaml(file: "resources/dataeng-props.yml")
             props = dataeng.configLocal(localSettings)
-            println "${props.getClass()}" 
-            println "${props.repo}"
           }
         }
       }
