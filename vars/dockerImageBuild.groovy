@@ -67,7 +67,10 @@ pipeline {
       }
       steps('Build Image') {
         script {
-          sh "cd lib && docker build -t jsapp ."
+          sh "cd lib"
+          sh "ls -l"
+          sh "cat Dockerfile"
+          sh "docker build -t jsapp ."
         }
       }
     }
