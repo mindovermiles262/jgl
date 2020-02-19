@@ -77,12 +77,7 @@ def createBuildProps() {
 }
 
 def gcloudAuth(){
-  try {
-    sh "gcloud auth activate-service-account --key-file=${buildProps.gcpCredentials} --project=${buildProps.gcpProjectId}"
-  catch (Exception e) {
-    println "Catch:"
-    sh "gcloud auth activate-service-account --key-file=${buildProps.creds} --project=${buildProps.gcpProjectId}"
-  }
+  sh "gcloud auth activate-service-account --key-file=${buildProps.gcpCredentials} --project=${buildProps.gcpProjectId}"
 }
 
 def buildDockerImage() {
