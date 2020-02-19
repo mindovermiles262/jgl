@@ -54,3 +54,7 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
   customSettings.each{ entry -> defaultSettings[entry.key] = entry.value }
   return defaultSettings
 }
+
+def buildDockerImage() {
+  println "Hello World"
+}

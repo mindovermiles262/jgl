@@ -58,7 +58,7 @@ pipeline {
       agent {
         kubernetes {
           containerTemplate {
-            image 'docker:dind'
+            image 'google/cloud-sdk:alpine'
             name 'docker-build'
             command 'cat'
             ttyEnabled true
@@ -67,12 +67,7 @@ pipeline {
       }
       steps('Build Image') {
         script {
-          sh """
-          cd ./lib/
-          ls -l
-          cat Dockerfile
-          docker build -t js-app .
-          """
+          dataeng.buildDockerImage()
         }
       }
     }
