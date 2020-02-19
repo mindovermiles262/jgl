@@ -70,3 +70,6 @@ def configLocal(String yamlResource,
   return props
 }
 
+def helloWorld() {
+  println "Hello World"
+}
