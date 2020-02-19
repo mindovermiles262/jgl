@@ -53,23 +53,25 @@ pipeline {
     //     }
     //   }
     // }
-  } 
-
-  stages {
-    agent {
-      kubernetes {
-        containerTemplate {
-          image 'google/cloud-sdk:alpine'
-          name 'docker-build'
-          command 'cat'
-          ttyEnabled true
+    
+    stage('Docker Build') {
+      agent {
+        kubernetes {
+          containerTemplate {
+            image 'google/cloud-sdk:alpine'
+            name 'docker-build'
+            command 'cat'
+            ttyEnabled true
+          }
         }
       }
-    }
-    stage('Docker Build') {
-      steps('Build Image') {
-        script {
-          dataeng.buildDockerImage()
+      stages {
+        stage('Build Image') {
+          steps('Build Image') {
+            script {
+              dataeng.buildDockerImage()
+            }
+          }
         }
       }
     }
