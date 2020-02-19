@@ -74,4 +74,10 @@ def configLocal(String envName = 'test',
 def configLocal(String loadFile = "./resources/dataeng-props.yml") {
   def f = readYaml text: loadFile
   println ("Loaded file ${f}")
+  def props = [:]
+  f['environments'][envName][namespace].each {
+    props[it.key] = it.value
+  }
+  return props
+  
 }
