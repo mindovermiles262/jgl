@@ -35,6 +35,7 @@ pipeline {
 
     // Runs 'make test' to execute unit testing. Add an optional map config
     // to dataeng.unitTest() to change default values.
+/*
     stage('unit test') {
       agent {
         kubernetes {
@@ -53,6 +54,15 @@ pipeline {
         }
       }
     }
+*/
+  stage('Build image') {
+    steps {
+      script {
+        def props = dataeng.configLocal()
+        props.each{ item -> println "${item.key} => ${item.value}"}
+      }
+    }
+  }
   }
 }
 }
