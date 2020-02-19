@@ -60,6 +60,7 @@ pipeline {
   stage('Build image') {
     steps {
       script {
+        sh "ls -l"
         def props = dataeng.configLocal()
         props.each{ item -> println "${item.key} => ${item.value}"}
       }
