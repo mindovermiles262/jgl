@@ -54,3 +54,13 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
   customSettings.each{ entry -> defaultSettings[entry.key] = entry.value }
   return defaultSettings
 }
+
+def configLocal(String envName = 'test', String namespace = 'default', String yamlFile = 'dataeng-props.yml') {
+  def propsFile = libraryResource yamlFile
+  def config = readYaml text: propsFile
+  def props = [:]
+  config['environments'][namespace][envName].each {
+    props[it.key] = it.value
+  }
+  return props
+}
