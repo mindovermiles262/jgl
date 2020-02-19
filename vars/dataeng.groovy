@@ -80,9 +80,6 @@ def gcloudAuth(){
 }
 
 def buildDockerImage() {
-  println "${buildProps.containerImageName}"
-  sh 'ls -l'
-  println "${buildProps.gcpCredentials}"
   sh """
   cd ./lib/
   gcloud --quiet --project ${buildProps.gcpProjectId} builds submit --tag ${buildProps.containerImageName}
