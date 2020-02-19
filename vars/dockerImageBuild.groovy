@@ -59,6 +59,7 @@ def call(){
           script {
             def localSettings = readYaml(file: "resources/dataeng-props.yml")
             def props = dataeng.configLocal(localSettings)
+            println "${props.getClass()}" 
           }
         }
       }
