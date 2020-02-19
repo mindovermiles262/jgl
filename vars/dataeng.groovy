@@ -56,15 +56,13 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
 }
 
 
-def configLocal(String yamlConfig,
-                String envName = 'test',
-                String namespace = 'default') {
+def configLocal(Map yamlConfig) {
   // def propsFile = libraryResource yamlFile
   // def config = readYaml text: propsFile
-  println "In CL: ${yamlConfig}"
-  yamlResource = readYaml(text: yamlConfig)
+  println "In CL: ${yamlConfig.getClass()}"
   def props = [:]
-  yamlResource['environments'][envName][namespace].each {
+  yamlConfig.each {
+    println "${it.key} => ${it.value}"
     props[it.key] = it.value
   }
   return props
