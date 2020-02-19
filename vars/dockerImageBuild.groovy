@@ -58,7 +58,7 @@ pipeline {
       agent {
         kubernetes {
           containerTemplate {
-            image 'docker'
+            image 'docker:dind'
             name 'docker-build'
             command 'cat'
             ttyEnabled true
