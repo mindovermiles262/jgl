@@ -70,6 +70,7 @@ def createBuildProps() {
   buildProps.gcpProjectId = 'kubicia'
   buildProps.repoName = env.JOB_BASE_NAME
   buildProps.imageTag = env.BUILD_ID
+  buildProps.gcpCredentials = credentials("kubicia")
   buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   return buildProps
 }
@@ -77,8 +78,10 @@ def createBuildProps() {
 def buildDockerImage() {
   println "${buildProps.containerImageName}"
   sh 'ls -l'
+  println "${buildProps.gcpCredentials}"
   sh """
   cd ./lib/
+  gcloud auth activate-service-account --key-file=${buildProps.gcpCredentials} --project=${buildProps.gcpProjectId}
   gcloud --quiet --project ${buildProps.gcpProjectId} builds submit --tag ${buildProps.containerImageName}
   """
 }
