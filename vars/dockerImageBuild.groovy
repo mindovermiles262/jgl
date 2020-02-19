@@ -53,6 +53,7 @@ def call(){
           }
         }
       }
+
       stage('Build image') {
         steps {
           script {
