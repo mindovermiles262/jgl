@@ -71,5 +71,5 @@ def createBuildProps() {
   buildProps.repoName = env.JOB_BASE_NAME
   buildProps.imageTag = env.BUILD_ID
   buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
-
+  return buildProps
 }
