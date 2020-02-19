@@ -64,7 +64,7 @@ pipeline {
         def localSettings = readYaml(file: "resources/dataeng-props.yml")
         def sendSettings = localSettings['environments']['test']['default']
         println "${sendSettings.getClass()}"
-        dataeng.configLocal(localSettings)
+        dataeng.configLocal(sendSettings)
       }
     }
   }
