@@ -76,8 +76,7 @@ pipeline {
         stage('Build Image') {
           steps {
             script {
-              // dataeng.gcloudAuth()
-              sh 'echo Hello World'
+              dataeng.gcloudAuth()
               // dataeng.buildDockerImage()
             }
           }
