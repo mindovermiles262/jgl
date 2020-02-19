@@ -61,8 +61,11 @@ pipeline {
     steps {
       script {
         dataeng.helloWorld()
-        def localSettings = readYaml(file: "resources/dataeng-props.yml").toString()
-        dataeng.configLocal(localSettings)
+        def localSettings = readYaml(file: "resources/dataeng-props.yml")
+        localSettings['environments']['test']['default'].each {
+          println "${it.key} => ${it.value}"
+        }
+        // dataeng.configLocal(localSettings)
       }
     }
   }
