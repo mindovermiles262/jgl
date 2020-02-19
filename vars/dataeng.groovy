@@ -63,6 +63,7 @@ def configLocal(String yamlResource,
   // def config = readYaml text: propsFile
   println "In CL: ${yamlResource}"
   println "${yamlResource.getClass()}"
+  println "${yamlResource.toString()}"
   def config = readYaml text: yamlResource
   def props = [:]
   config['environments'][envName][namespace].each {
