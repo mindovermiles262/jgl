@@ -1,19 +1,25 @@
 def call(){
 
-pipeline {
+  pipeline {
 
-  agent {
-    kubernetes {
-      containerTemplate {
-        name 'alp'
-        image 'alpine'
-        ttyEnabled true
-        command 'cat'
+    agent {
+      kubernetes {
+        // containerTemplate {
+        //   name 'alp'
+        //   image 'alpine'
+        //   ttyEnabled true
+        //   command 'cat'
+        // }
+        containerTemplate {
+          image 'google/cloud-sdk:alpine'
+            name 'docker-build'
+            command 'cat'
+            ttyEnabled true
+        }
       }
     }
-  }
 
-  stages {
+    stages {
       stage('Set Build Properties') {
         steps {
           script {
@@ -21,81 +27,72 @@ pipeline {
           }
         }
       }
-    // List ENV vars for easier debugging
-    // stage('Get ENV') {
-    //   steps {
-    //     script {
-    //       sh 'printenv'
-    //     }
-    //   }
-    // }
+      // List ENV vars for easier debugging
+      // stage('Get ENV') {
+      //   steps {
+      //     script {
+      //       sh 'printenv'
+      //     }
+      //   }
+      // }
 
-    // immediately fail the job when someone is working
-    // with a branch we know nothing about.
-    // stage('verify branch') {
-    //   steps {
-    //     script {
-    //       dataeng.verifyBranchName("(^(origin/)?master\$|^feature/.*|^develop\$)")
-    //     }
-    //   }
-    // }
+      // immediately fail the job when someone is working
+      // with a branch we know nothing about.
+      // stage('verify branch') {
+      //   steps {
+      //     script {
+      //       dataeng.verifyBranchName("(^(origin/)?master\$|^feature/.*|^develop\$)")
+      //     }
+      //   }
+      // }
 
-    // Runs 'make test' to execute unit testing. Add an optional map config
-    // to dataeng.unitTest() to change default values.
-    // stage('unit test') {
-    //   agent {
-    //     kubernetes {
-    //       containerTemplate {
-    //         // TODO: Upload python testing container to GCR with 'make' installed
-    //         image 'mindovermiles262/pytest:0.2.0'
-    //         name 'dataeng-pytest'
-    //         command 'cat'
-    //         ttyEnabled true
-    //       }
-    //     }
-    //   }
-    //   steps {
-    //     script{
-    //       dataeng.unitTest()
-    //     }
-    //   }
-    // }
-    
-    stage('Docker Build') {
-      agent {
-        kubernetes {
-          containerTemplate {
-            image 'google/cloud-sdk:alpine'
-            name 'docker-build'
-            command 'cat'
-            ttyEnabled true
+      // Runs 'make test' to execute unit testing. Add an optional map config
+      // to dataeng.unitTest() to change default values.
+      // stage('unit test') {
+      //   agent {
+      //     kubernetes {
+      //       containerTemplate {
+      //         // TODO: Upload python testing container to GCR with 'make' installed
+      //         image 'mindovermiles262/pytest:0.2.0'
+      //         name 'dataeng-pytest'
+      //         command 'cat'
+      //         ttyEnabled true
+      //       }
+      //     }
+      //   }
+      //   steps {
+      //     script{
+      //       dataeng.unitTest()
+      //     }
+      //   }
+      // }
+
+      stage('Auth') {
+        steps {
+          container('docker-build') {
+            script {
+              dataeng.gcloudAuth()
+            }
           }
         }
       }
-      stages {
-        stage('Auth') {
-          steps {
+      stage('Verify') {
+        steps {
           container('docker-build') {
             script {
-              withCredentials([file(credentialsId: 'kubicia-cb', variable: 'GC_KEY')]) {
-                dataeng.gcloudAuth()
-              }
+              dataeng.gcloudCheckIfImageExists()
             }
-          }
           }
         }
-        stage('Build') {
-          steps {
+      }
+      stage('Build') {
+        steps {
           container('docker-build') {
             script {
-              dataeng.buildDockerImage()
+              dataeng.gcloudBuildSubmit()
             }
-          }
           }
         }
       }
     }
-
   }
-}
-}

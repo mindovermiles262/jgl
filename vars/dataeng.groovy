@@ -70,28 +70,49 @@ def createBuildProps() {
   buildProps.gcpProjectId = 'kubicia'
   buildProps.repoName = env.JOB_BASE_NAME
   buildProps.imageTag = env.BUILD_ID
-  buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
+  buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
+
+  buildProps.gcpKeyFile = 'kubicia-file'
+  buildProps.cloudBuildLogsBucket = 'gs://myfakeproject/bucket'
   return buildProps
 }
 
-def gcloudAuth(){
-  echo "[+] Authenticating with ${buildProps.gcpCredentials}"
+// Authenticates Service Account
+def gcloudAuth() {
+  echo "[+] Authenticating with ${buildProps.gcpKeyFile}"
   sh """
-  gcloud auth activate-service-account \
-    --key-file=${GC_KEY} \
+    gcloud auth activate-service-account \
+    --key-file=${buildProps.gcpKeyFile} \
     --project=${buildProps.gcpProjectId}
   """
 }
 
-def buildDockerImage() {
-  echo "[+] Building Docker Image"
-  dir ('./lib/') {
+
+// Submits Dockerfile to CloudBuild for container creation
+def gcloudBuildSubmit() {
+  echo "[+] Building Docker Image ${buildProps.containerImageName}"
+  dir ('./src/') {
     sh """
-    gcloud \
+      gcloud \
       --quiet \
       --project ${buildProps.gcpProjectId} \
       builds submit \
       --tag ${buildProps.containerImageName}
     """
+      // --gcs-log-dir=${buildProps.cloudBuildLogsBucket}
+  }
+}
+
+
+// Checks if container name is already in GCR
+def gcloudCheckIfImageExists() {
+  def existingImage = sh(
+    returnStdout: true,
+    script: "gcloud container images describe ${buildProps.containerImageName}"
+  )
+  if (existingImage) {
+    fail('Image ${dataProps.containerImageName} already exists in GCP. Refusing to build')
+  } else { 
+    echo "Image does not exist. Proceeding with build."
   }
 }
