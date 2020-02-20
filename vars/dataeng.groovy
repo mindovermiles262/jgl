@@ -100,7 +100,8 @@ def gcloudBuildSubmit() {
       --quiet \
       --project ${buildProps.gcpProjectId} \
       builds submit \
-      --tag ${buildProps.containerImageName}
+      --tag ${buildProps.containerImageName} \
+      .
     """
       // --gcs-log-dir=${buildProps.cloudBuildLogsBucket}
   }
@@ -112,8 +113,9 @@ def gcloudCheckIfImageExists() {
   script {
     try {
       sh "gcloud container images describe ${buildProps.containerImageName}"
+      fail('Container already exists')
     } catch (Exception e) {
-      echo "catch" 
+      echo "Catch: ${e}"
     }
   }
 }
