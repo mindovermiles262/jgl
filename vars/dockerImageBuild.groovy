@@ -86,9 +86,11 @@ pipeline {
         }
         stage('Build') {
           steps {
+          container('docker-build') {
             script {
               dataeng.buildDockerImage()
             }
+          }
           }
         }
       }
