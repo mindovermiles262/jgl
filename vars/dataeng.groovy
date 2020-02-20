@@ -75,13 +75,19 @@ def createBuildProps() {
 }
 
 def gcloudAuth(){
-  println "${buildProps.gcpCredentials}"
+  println "[+] Authenticating with ${buildProps.gcpCredentials}"
   sh "gcloud auth activate-service-account --key-file=${GC_KEY} --project=${buildProps.gcpProjectId}"
 }
 
 def buildDockerImage() {
-  sh """
-  cd ./lib/
-  gcloud --quiet --project ${buildProps.gcpProjectId} builds submit --tag ${buildProps.containerImageName}
-  """
+  println "[+] Building Docker Image"
+  dir ('./lib/') {
+    sh """
+    gcloud \
+      --quiet \
+      --project ${buildProps.gcpProjectId} \
+      builds submit \
+      --tag ${buildProps.containerImageName}
+    """
+  }
 }
