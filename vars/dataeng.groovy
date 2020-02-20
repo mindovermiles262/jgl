@@ -71,7 +71,7 @@ def createBuildProps() {
   buildProps.repoName = env.JOB_BASE_NAME
   buildProps.imageTag = env.BUILD_ID
   // buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
-  buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:duplicate"
+  buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:duplicate2"
 
   buildProps.gcpKeyFile = 'kubicia-cb'
   buildProps.cloudBuildLogsBucket = 'gs://myfakeproject/bucket'
@@ -101,7 +101,6 @@ def gcloudBuildSubmit() {
       --project ${buildProps.gcpProjectId} \
       builds submit \
       --tag ${buildProps.containerImageName} \
-      .
     """
       // --gcs-log-dir=${buildProps.cloudBuildLogsBucket}
   }
@@ -113,7 +112,8 @@ def gcloudCheckIfImageExists() {
   script {
     try {
       sh "gcloud container images describe ${buildProps.containerImageName}"
-      fail('Container already exists')
+      // if we make it this far, image already exists and we should bail
+      error('Container already exists')
     } catch (Exception e) {
       echo "Catch: ${e}"
     }
