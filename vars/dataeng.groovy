@@ -112,7 +112,7 @@ def gcloudCheckIfImageExists() {
   script {
     try {
       sh "gcloud container images describe ${buildProps.containerImageName}"
-    } catch {
+    } catch (Exception e) {
       echo "catch" 
     }
   }
