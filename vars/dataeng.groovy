@@ -110,7 +110,7 @@ def gcloudBuildSubmit() {
 def gcloudCheckIfImageExists() {
   def existingImage = sh(
     returnStdout: true,
-    script: "gcloud container images describe ${buildProps.containerImageName}"
+    script: "gcloud container images describe ${buildProps.repoName}"
   )
   if (existingImage) {
     fail('Image ${dataProps.containerImageName} already exists in GCP. Refusing to build')
