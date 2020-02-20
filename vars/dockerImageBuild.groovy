@@ -73,6 +73,7 @@ pipeline {
         }
       }
       stages {
+        container('docker-build') {
         stage('Auth') {
           steps {
             script {
@@ -88,6 +89,7 @@ pipeline {
               dataeng.buildDockerImage()
             }
           }
+        }
         }
       }
     }
