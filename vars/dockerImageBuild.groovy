@@ -73,14 +73,15 @@ pipeline {
         }
       }
       stages {
-        container('docker-build') {
         stage('Auth') {
           steps {
+          container('docker-build') {
             script {
               withCredentials([file(credentialsId: 'kubicia-cb', variable: 'GC_KEY')]) {
                 dataeng.gcloudAuth()
               }
             }
+          }
           }
         }
         stage('Build') {
@@ -89,7 +90,6 @@ pipeline {
               dataeng.buildDockerImage()
             }
           }
-        }
         }
       }
     }
