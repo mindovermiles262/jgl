@@ -80,11 +80,13 @@ def createBuildProps() {
 // Authenticates Service Account
 def gcloudAuth() {
   echo "[+] Authenticating with ${buildProps.gcpKeyFile}"
-  sh """
-    gcloud auth activate-service-account \
-    --key-file=${buildProps.gcpKeyFile} \
-    --project=${buildProps.gcpProjectId}
-  """
+  withCredentials([file(credentialsId: buildProps.gcpKeyFile, variable: 'gcpKeyFile')]) {
+    sh """
+      gcloud auth activate-service-account \
+      --key-file=${gcpKeyFile} \
+      --project=${buildProps.gcpProjectId}
+    """
+  }
 }
 
 
