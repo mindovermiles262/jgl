@@ -72,7 +72,7 @@ def createBuildProps() {
   buildProps.imageTag = env.BUILD_ID
   buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
 
-  buildProps.gcpKeyFile = 'kubicia-file'
+  buildProps.gcpKeyFile = 'kubicia-cd'
   buildProps.cloudBuildLogsBucket = 'gs://myfakeproject/bucket'
   return buildProps
 }
