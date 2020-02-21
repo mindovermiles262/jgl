@@ -115,7 +115,7 @@ def gcloudCheckIfImageExists() {
   )
   if (existingImage == 0) {
     // exit(0) => Image found in GCR. Bail on build
-    error("Image ${dataProps.containerImageName} already exists in GCP. Refusing to build")
+    error("Image ${buildProps.containerImageName} already exists in GCP. Refusing to build")
   } else { 
     echo "[+] Image not found in GCR. Proceeding with build."
   }
