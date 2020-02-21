@@ -34,6 +34,8 @@ pipeline {
     // Runs 'make test' to execute unit testing. Add an optional map config
     // to dataeng.unitTest() to change default values.
     stage('unit test') {
+      // overwrite base container image
+      buildProps.unitTestBaseContainer = 'python:3.8-alpine'
       agent {
         kubernetes {
           containerTemplate {
