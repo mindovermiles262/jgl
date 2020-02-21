@@ -33,26 +33,10 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-        stage('pytest') {
-          agent {
-            kubernetes {
-              containerTemplate {
-                image 'python:3.7-alpine'
-                name 'python-3.7'
-                command 'cat'
-                ttyEnabled true
-              }
-            }
-          }
-          steps {
-            script {
-              echo "[+] Running unit tests"
-              sh "apk update && apk add make"
-              sh "python -v"
-              // sh "make -f ${settings['unitTestMakefile']} test"
-            }
-          }
-        }
+    echo "[+] Running unit tests"
+    sh "apk update && apk add make"
+    sh "python -v"
+    // sh "make -f ${settings['unitTestMakefile']} test"
   default:
     // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
