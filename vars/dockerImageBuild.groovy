@@ -30,7 +30,7 @@ pipeline {
         kubernetes {
           containerTemplate {
             image 'python:3.7-alpine'
-            name 'python-3.7'
+            name 'python-37'
             command 'cat'
             ttyEnabled true
           }
