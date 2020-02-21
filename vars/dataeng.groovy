@@ -31,10 +31,16 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-    echo "[+] Running unit tests"
-    sh "apk update && apk add make"
-    sh "python -V"
-    sh "make -f ${settings['unitTestMakefile']} test"
+    stage('pytest') {
+      steps {
+        script {
+          echo "[+] Running unit tests"
+          sh "apk update && apk add make"
+          sh "python -V"
+          sh "make -f ${settings['unitTestMakefile']} test"
+        }
+      }
+    }
   default:
     // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
