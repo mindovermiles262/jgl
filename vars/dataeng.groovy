@@ -41,6 +41,7 @@ def unitTest(Map customSettings = [:]) {
       //   userRemoteConfigs: [[url: settings.unitTestGitUrl]]
       // ])
       echo "[+] Running unit tests"
+      sh "apk update && apk add make"
       sh "make -f ${settings['unitTestMakefile']} test"
     }
   default:
