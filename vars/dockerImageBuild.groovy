@@ -27,7 +27,7 @@ pipeline {
       steps {
         script {
           echo "[+] Start BuildProps Stage"
-          dataeng.createBuildProps()
+          buildProps = dataeng.createBuildProps()
           echo "BuildProps: ${buildProps}"
         }
       }

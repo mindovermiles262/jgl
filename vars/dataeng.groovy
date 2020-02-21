@@ -57,6 +57,7 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
 
 
 def createBuildProps() {
+  // without 'def', buildProps is globally scoped
   buildProps = [:]
   buildProps.branch = env.GIT_BRANCH
   buildProps.commit = env.GIT_COMMIT[-6..-1]
