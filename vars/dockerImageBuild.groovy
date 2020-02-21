@@ -26,7 +26,7 @@ pipeline {
     stage('BuildProps') {
       steps {
         script {
-          dataeng.createBuildProps()
+          buildProps = dataeng.createBuildProps()
         }
       }
     }
