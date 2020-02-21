@@ -33,6 +33,7 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
+      pipeline {
       stages {
         agent {
           kubernetes {
@@ -54,6 +55,7 @@ def unitTest(Map customSettings = [:]) {
             }
           }
         }
+      }
       }
   default:
     // Fail if not 'unitTestLanguage' is not supported
