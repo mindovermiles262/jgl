@@ -24,7 +24,7 @@ def verifyBranchName(String regexPattern = "(^master\$|^feature/.*|^develop\$)")
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
     unitTestMakefile: "Makefile",
-    unitTestLanguage: "python-default",
+    unitTestLanguage: "python-alpine",
   ]
 
   settings = overwriteMap(defaultSettings, customSettings)
