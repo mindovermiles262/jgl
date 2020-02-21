@@ -35,11 +35,12 @@ def unitTest(Map customSettings = [:]) {
   switch(settings.unitTestLanguage){
   case("python-default"):
     script {
-      checkout([
-        $class: 'GitSCM',
-        branches: [[name: settings.unitTestGitBranch]],
-        userRemoteConfigs: [[url: settings.unitTestGitUrl]]
-      ])
+      // checkout([
+      //   $class: 'GitSCM',
+      //   branches: [[name: settings.unitTestGitBranch]],
+      //   userRemoteConfigs: [[url: settings.unitTestGitUrl]]
+      // ])
+      echo "[+] Running unit tests"
       sh "make -f ${settings['unitTestMakefile']} test"
     }
   default:
