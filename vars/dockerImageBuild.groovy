@@ -28,7 +28,8 @@ pipeline {
         script {
           buildProps = dataeng.createBuildProps()
           // overwrite base container image
-          buildProps.unitTestBaseContainer = 'python:3.8-alpine'
+          buildProps.unitTestBaseContainer = 'python:3.8-slim'
+          buildProps.unitTestInstallMakeCommand = "apt-get update && apt-get install -y make"
         }
       }
     }
