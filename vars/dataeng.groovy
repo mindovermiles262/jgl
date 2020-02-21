@@ -27,22 +27,33 @@ def unitTest(Map customSettings = [:]) {
     unitTestGitBranch: env.GIT_BRANCH,
     unitTestMakefile: "Makefile",
     unitTestLanguage: "python-default",
-    unitTestContainerName: "dataeng-pytest"
   ]
 
   settings = overwriteMap(defaultSettings, customSettings)
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-    script {
-      // checkout([
-      //   $class: 'GitSCM',
-      //   branches: [[name: settings.unitTestGitBranch]],
-      //   userRemoteConfigs: [[url: settings.unitTestGitUrl]]
-      // ])
-      echo "[+] Running unit tests"
-      sh "apk update && apk add make"
-      sh "make -f ${settings['unitTestMakefile']} test"
+    stages {
+      agent {
+        kubernetes {
+          containerTemplate {
+            image 'python:3.7-alpine'
+            name 'python-3.7'
+            command 'cat'
+            ttyEnabled true
+          }
+        }
+      }
+      stage('pytest') {
+        steps {
+          script {
+            echo "[+] Running unit tests"
+            sh "apk update && apk add make"
+            sh "python -v"
+            // sh "make -f ${settings['unitTestMakefile']} test"
+          }
+        }
+      }
     }
   default:
     // Fail if not 'unitTestLanguage' is not supported
