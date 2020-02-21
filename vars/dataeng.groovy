@@ -32,6 +32,16 @@ def unitTest(Map customSettings = [:]) {
   switch(settings.unitTestLanguage){
   case("python-default"):
     stage('pytest') {
+      agent {
+        kubernetes {
+          containerTemplate {
+            image 'python:3.7-alpine'
+            name 'python-37'
+            command 'cat'
+            ttyEnabled true
+          }
+        }
+      }
       steps {
         script {
           echo "[+] Running unit tests"
