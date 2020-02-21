@@ -18,9 +18,8 @@ def verifyBranchName(String regexPattern = "(^master\$|^feature/.*|^develop\$)")
 }
 
 
-// Runs unit testing on codebase. 
-// By default, runs 'make test' from the project's root directory inside a
-// sandboxed testing container.
+// Runs unit testing on codebase via 'make test'
+// 
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
     unitTestMakefile: "Makefile",
@@ -33,7 +32,6 @@ def unitTest(Map customSettings = [:]) {
   case("python-alpine"):
     echo "[+] Running unit tests"
     sh buildProps.unitTestInstallMakeCommand
-    sh "python -V"
     sh "make -f ${settings['unitTestMakefile']} test"
   default:
     // Fail if not 'unitTestLanguage' is not supported
