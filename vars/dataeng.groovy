@@ -31,16 +31,10 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-alpine"):
-    stage('pytest') {
-      steps {
-        script {
-          echo "[+] Running unit tests"
-          sh buildProps.unitTestInstallMakeCommand
-          sh "python -V"
-          sh "make -f ${settings['unitTestMakefile']} test"
-        }
-      }
-    }
+    echo "[+] Running unit tests"
+    sh buildProps.unitTestInstallMakeCommand
+    sh "python -V"
+    sh "make -f ${settings['unitTestMakefile']} test"
   default:
     // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
