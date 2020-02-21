@@ -33,7 +33,7 @@ def unitTest(Map customSettings = [:]) {
 
   switch(settings.unitTestLanguage){
   case("python-default"):
-      stage('pytest') {
+      stages {
         agent {
           kubernetes {
             containerTemplate {
@@ -44,12 +44,14 @@ def unitTest(Map customSettings = [:]) {
             }
           }
         }
-        steps {
-          script {
-            echo "[+] Running unit tests"
-            sh "apk update && apk add make"
-            sh "python -v"
-            // sh "make -f ${settings['unitTestMakefile']} test"
+        stage('pytest') {
+          steps {
+            script {
+              echo "[+] Running unit tests"
+              sh "apk update && apk add make"
+              sh "python -v"
+              // sh "make -f ${settings['unitTestMakefile']} test"
+            }
           }
         }
       }
