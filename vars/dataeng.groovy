@@ -53,7 +53,6 @@ def unitTest(Map customSettings = [:]) {
           }
         }
       }
-    }
   default:
     // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
