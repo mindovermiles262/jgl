@@ -23,8 +23,6 @@ def verifyBranchName(String regexPattern = "(^master\$|^feature/.*|^develop\$)")
 // sandboxed testing container.
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
-    unitTestGitUrl: env.GIT_URL,
-    unitTestGitBranch: env.GIT_BRANCH,
     unitTestMakefile: "Makefile",
     unitTestLanguage: "python-default",
   ]
@@ -35,8 +33,8 @@ def unitTest(Map customSettings = [:]) {
   case("python-default"):
     echo "[+] Running unit tests"
     sh "apk update && apk add make"
-    sh "python -v"
-    // sh "make -f ${settings['unitTestMakefile']} test"
+    sh "python -V"
+    sh "make -f ${settings['unitTestMakefile']} test"
   default:
     // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
