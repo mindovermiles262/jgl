@@ -27,9 +27,6 @@ pipeline {
       steps {
         script {
           buildProps = dataeng.createBuildProps()
-          // overwrite base container image
-          buildProps.unitTestBaseContainer = 'python:3.8-slim'
-          buildProps.unitTestInstallMakeCommand = "apt-get update && apt-get install -y make"
         }
       }
     }
@@ -37,10 +34,6 @@ pipeline {
     // Runs 'make test' to execute unit testing. Add an optional map config
     // to dataeng.unitTest() to change default values.
     stage('unit test') {
-      environment {
-        UNIT_TEST_BASE_CONTAINER = 'python:3.8-slim'
-        UNIT_TEST_INSTALL_MAKE_COMMAND = 'apt-get update && apt-get install -y make'
-      }
       agent {
         kubernetes {
           containerTemplate {

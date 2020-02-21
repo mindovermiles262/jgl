@@ -19,20 +19,40 @@ def verifyBranchName(String regexPattern = "(^master\$|^feature/.*|^develop\$)")
 
 
 // Runs unit testing on codebase via 'make test'
-// 
 def unitTest(Map customSettings = [:]) {
   defaultSettings = [
     unitTestMakefile: "Makefile",
-    unitTestLanguage: "python-alpine",
+    unitTestLanguage: "python",
   ]
 
   settings = overwriteMap(defaultSettings, customSettings)
 
   switch(settings.unitTestLanguage){
-  case("python-alpine"):
-    echo "[+] Running unit tests"
-    sh buildProps.unitTestInstallMakeCommand
-    sh "make -f ${settings['unitTestMakefile']} test"
+  case("python"):
+    pipeline {
+      agent {
+        kubernetes {
+          containerTemplate {
+            image buildProps.unitTestBaseContainer
+            name 'python-testing-container'
+            command 'cat'
+            ttyEnabled true
+          }
+        }
+      }
+      stages {
+        stage('Python Testing') {
+          script {
+
+            echo "[+] Running unit tests"
+            sh buildProps.unitTestInstallMakeCommand
+            sh "make -f ${settings['unitTestMakefile']} test"
+
+          }
+        }
+      }
+    }
+
   default:
     // Fail if not 'unitTestLanguage' is not supported
     error("[!] Unit Testing Language not supported.")
@@ -57,7 +77,7 @@ def createBuildProps() {
   buildProps.environment = 'prod'
 
 
-  buildProps.unitTestBaseContainer = 'python:3.7-alpine'
-  buildProps.unitTestInstallMakeCommand = 'apk update && apk add make'
+  buildProps.unitTestBaseContainer = env.UNIT_TEST_BASE_CONTAINER || 'python:3.7-alpine'
+  buildProps.unitTestInstallMakeCommand = env.UNIT_TEST_INSTALL_MAKE_COMMAND || 'apk update && apk add make'
   return buildProps
 }
