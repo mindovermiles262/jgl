@@ -30,22 +30,12 @@ def unitTest(Map customSettings = [:]) {
   settings = overwriteMap(defaultSettings, customSettings)
 
   switch(settings.unitTestLanguage){
-  case("python-default"):
+  case("python-alpine"):
     stage('pytest') {
-      agent {
-        kubernetes {
-          containerTemplate {
-            image 'python:3.7-alpine'
-            name 'python-37'
-            command 'cat'
-            ttyEnabled true
-          }
-        }
-      }
       steps {
         script {
           echo "[+] Running unit tests"
-          sh "apk update && apk add make"
+          sh buildProps.unitTestInstallMakeCommand
           sh "python -V"
           sh "make -f ${settings['unitTestMakefile']} test"
         }
@@ -62,4 +52,17 @@ def unitTest(Map customSettings = [:]) {
 def overwriteMap(Map defaultSettings, Map customSettings) {
   customSettings.each{ entry -> defaultSettings[entry.key] = entry.value }
   return defaultSettings
+}
+
+
+def createBuildProps {
+  buildProps.branch = env.GIT_BRANCH
+  buildProps.commit = env.GIT_COMMIT[-6..-1]
+  buildProps.buildNumber = env.BUILD_NUMBER
+  buildProps.environment = 'prod'
+
+
+  buildProps.unitTestBaseContainer = 'python:3.7-alpine'
+  buildProps.unitTestInstallMakeCommand = 'apk update && apk add make'
+  return buildProps
 }
