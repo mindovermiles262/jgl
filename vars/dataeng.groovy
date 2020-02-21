@@ -74,7 +74,7 @@ def createBuildProps() {
   buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:duplicate"
 
   buildProps.gcpKeyFile = 'svc-kubicia-cloud-build'
-  buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket'
+  buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket/'
   return buildProps
 }
 
