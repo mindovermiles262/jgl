@@ -27,6 +27,7 @@ pipeline {
       steps {
         script {
           buildProps = dataeng.createBuildProps()
+          echo "BuildProps: ${buildProps}"
         }
       }
     }
@@ -37,7 +38,7 @@ pipeline {
       agent {
         kubernetes {
           containerTemplate {
-            image buildProps.unitTestBaseContainer
+            image "${buildProps.unitTestBaseContainer}"
             name 'unit-test'
             command 'cat'
             ttyEnabled true
