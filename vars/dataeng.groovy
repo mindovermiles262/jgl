@@ -57,7 +57,7 @@ def overwriteMap(Map defaultSettings, Map customSettings) {
 
 
 def createBuildProps() {
-  echo "[+] Inside createBuildProps()"
+  buildProps = [:]
   buildProps.branch = env.GIT_BRANCH
   buildProps.commit = env.GIT_COMMIT[-6..-1]
   buildProps.buildNumber = env.BUILD_NUMBER
