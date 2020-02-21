@@ -50,12 +50,13 @@ def unitTest(Map customSettings = [:]) {
 
 // Given two maps, append or overwrite the second into the first. Helper function.
 def overwriteMap(Map defaultSettings, Map customSettings) {
-  customSettings.each{ entry -> defaultSettings[entry.key] = entry.value }
+    customSettings.each{ entry -> defaultSettings[entry.key] = entry.value 
+  }
   return defaultSettings
 }
 
 
-def createBuildProps {
+def createBuildProps() {
   buildProps.branch = env.GIT_BRANCH
   buildProps.commit = env.GIT_COMMIT[-6..-1]
   buildProps.buildNumber = env.BUILD_NUMBER
