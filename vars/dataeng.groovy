@@ -29,13 +29,14 @@ def createBuildProps() {
   // * imageVersion
   // * targetGkeCluster
   // * targetGkeClusterZone
-  def buildPropsFileName = "buildProps.yaml"
-  def buildPropsFile = new File(buildPropsFileName)
-  try {
-    buildProps = readYaml file: buildPropsFileName
-  } catch (Exception e) {
-    buildProps = [:]
-  }
+  // def buildPropsFileName = "buildProps.yaml"
+  // def buildPropsFile = new File(buildPropsFileName)
+  // if (buildPropsFile.exists()) {
+  //   buildProps = readYaml file: buildPropsFileName
+  // } else {
+  //   buildProps = [:]
+  // }
+  buildProps = [:]
 
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
@@ -78,7 +79,7 @@ def createBuildProps() {
   buildProps.gcpKeyFile = credentials("${buildProps.gcpCredentialsId}")
 
   // grab some needed information from our helm values file for the current environment
-  def helm_values = readYaml file: "values-${buildProps.environment}.yaml"
+  def helm_values = readYAML file: "values-${buildProps.environment}.yaml"
   buildProps.targetGkeCluster = helm_values.global.targetGkeCluster
   buildProps.targetGkeClusterZone = helm_values.global.targetGkeClusterZone
 
