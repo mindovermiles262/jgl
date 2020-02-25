@@ -39,11 +39,11 @@ def createBuildProps() {
 
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
-  buildProps.repoName = props['jobPath'][-2]
+  buildProps.repoName = buildProps['jobPath'][-2]
   buildProps.branch = env.GIT_BRANCH
   buildProps.commit = env.GIT_COMMIT[-6..-1]
   buildProps.buildNumber = env.BUILD_NUMBER
-  buildProps.buildId = '#' + props['repo'] + '_' + props['branch'] + ' - ' + props['commit']
+  buildProps.buildId = '#' + buildProps['repo'] + '_' + buildProps['branch'] + ' - ' + buildProps['commit']
   buildProps.slackNotifyChannel = '#dataeng-alerts'
   buildProps.currentYear = "${year}"
   buildProps.nextRelease = "${currentWeekNumber}"
