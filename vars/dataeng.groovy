@@ -31,9 +31,9 @@ def createBuildProps() {
   // * targetGkeClusterZone
   def buildPropsFileName = "buildProps.yaml"
   def buildPropsFile = new File(buildPropsFileName)
-  if (buildPropsFile.exists()) {
+  try {
     buildProps = readYaml file: buildPropsFileName
-  } else {
+  } catch (Exception e) {
     buildProps = [:]
   }
 
