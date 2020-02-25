@@ -50,6 +50,14 @@ pipeline {
         }
       }
     }
+
+    stage('build') {
+      steps {
+        script {
+          dataeng.dockerImageBuild()
+        }
+      }
+    }
   }
 }
 }
