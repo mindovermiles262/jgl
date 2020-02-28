@@ -96,7 +96,7 @@ def gcloudBuildSubmit() {
       --quiet \
       --project ${buildProps.gcpProjectId} \
       builds submit \
-      --tag ${buildProps.containerImageName}
+      --tag ${buildProps.containerImageName} \
       --gcs-log-dir=${buildProps.cloudBuildLogsBucket}
     """
   }
