@@ -33,23 +33,23 @@ pipeline {
 
     // Runs 'make test' to execute unit testing. Add an optional map config
     // to dataeng.unitTest() to change default values.
-    stage('unit test') {
-      agent {
-        kubernetes {
-          containerTemplate {
-            image "${buildProps.unitTestBaseContainer}"
-            name 'unit-test'
-            command 'cat'
-            ttyEnabled true
-          }
-        }
-      }
-      steps {
-        script{
-          dataeng.unitTest()
-        }
-      }
-    }
+    // stage('unit test') {
+    //   agent {
+    //     kubernetes {
+    //       containerTemplate {
+    //         image "${buildProps.unitTestBaseContainer}"
+    //         name 'unit-test'
+    //         command 'cat'
+    //         ttyEnabled true
+    //       }
+    //     }
+    //   }
+    //   steps {
+    //     script{
+    //       dataeng.unitTest()
+    //     }
+    //   }
+    // }
 
     stage('build') {
       steps {
