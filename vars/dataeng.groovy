@@ -54,13 +54,13 @@ def createBuildProps() {
   if (buildProps.branch ==~ /^(^master$)/) {
     buildProps.environment = 'prod'
     buildProps.gcpProjectId = 'aduss-kubicia'
-    buildProps.gcpCredentialsId = 'svc-kubicia-cloud-build'
+    buildProps.gcpCredentialsId = 'svc-aduss-kubicia-cloudbuilder'
     buildProps.imageReleaseState = ''
 
   } else {
     buildProps.environment = 'dev'
     buildProps.gcpProjectId = 'aduss-kubicia'
-    buildProps.gcpCredentialsId = 'svc-kubicia-cloud-build'
+    buildProps.gcpCredentialsId = 'svc-aduss-kubicia-cloudbuilder'
     buildProps.imageReleaseState = "-beta"
   }
 
