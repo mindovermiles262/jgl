@@ -221,8 +221,7 @@ def gcloudAuth() {
 }
 
 def dockerImageBuild() {
-  // gcloudAuth()
-  // gcloudCheckIfImageExists()
-  // gcloudBuildSubmit()
-  echo "here"
+  gcloudAuth()
+  gcloudCheckIfImageExists()
+  gcloudBuildSubmit()
 }
