@@ -214,7 +214,7 @@ def gcloudAuth() {
   withCredentials([file(credentialsId: buildProps.gcpCredentialsId, variable: 'gcpKeyFile')]) {
     sh """
     gcloud auth activate-service-account \
-      --key-file=${buildProps.gcpKeyFile} \
+      --key-file=${gcpKeyFile} \
       --project=${buildProps.gcpProjectId}
     """
   }
