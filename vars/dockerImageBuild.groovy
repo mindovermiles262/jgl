@@ -15,23 +15,23 @@ pipeline {
 
   stages {
     // List ENV vars for easier debugging
-    stage('Get ENV') {
-      agent {
-        kubernetes {
-          containerTemplate {
-            name 'alpine'
-            image 'alpine:latest'
-            ttyEnabled true
-            command 'cat'
-          }
-        }
-      }
-      steps {
-        script {
-          sh 'printenv'
-        }
-      }
-    }
+    // stage('Get ENV') {
+    //   agent {
+    //     kubernetes {
+    //       containerTemplate {
+    //         name 'alpine'
+    //         image 'alpine:latest'
+    //         ttyEnabled true
+    //         command 'cat'
+    //       }
+    //     }
+    //   }
+    //   steps {
+    //     script {
+    //       sh 'printenv'
+    //     }
+    //   }
+    // }
 
     stage('BuildProps') {
       steps {
