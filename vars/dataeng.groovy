@@ -63,15 +63,12 @@ def createBuildProps() {
   // don't bomb if imageVersion isn't set from local config, use env.BUILD_NUMBER instead
   if (buildProps.imageVersion) {
     buildProps.imageTag = buildProps.imageVersion + buildProps.imageReleaseState
-    buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   } else {
     buildProps.imageTag = buildProps.buildNumber + buildProps.imageReleaseState
-    buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   }
 
   // helm specific props
   buildProps.helmReleaseName = buildProps.repoName
-  buildProps.gcpKeyFile = credentials("${buildProps.gcpCredentialsId}")
 
   // grab some needed information from our helm values file for the current environment
   // def helm_values = readYaml file: "values-${buildProps.environment}.yaml"
@@ -85,6 +82,10 @@ def createBuildProps() {
     customProps = readYaml file: buildPropsFileName
     buildProps = overwriteMap(buildProps, customProps)
   }
+  
+  // Compound buildProps must go last so overwritten props are used
+  buildProps.gcpKeyFile = credentials("${buildProps.gcpCredentialsId}")
+  buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
 
   return buildProps
 }
