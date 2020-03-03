@@ -72,7 +72,8 @@ pipeline {
     stage('build') {
       steps {
         script {
-          dataeng.dockerImageBuild()
+          // dataeng.dockerImageBuild()
+          echo "[*] Inside Build Step"
         }
       }
     }
