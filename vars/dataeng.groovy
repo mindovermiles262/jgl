@@ -30,8 +30,7 @@ def createBuildProps() {
   // * targetGkeCluster
   // * targetGkeClusterZone
   def buildPropsFileName = "buildProps.yaml"
-  def buildPropsFile = new File(buildPropsFileName)
-  if (buildPropsFile.exists()) {
+  if (fileExists(buildPropsFileName)) {
     echo "[*] Reading buildProps.yaml"
     buildProps = readYaml file: buildPropsFileName
   } else {
