@@ -10,34 +10,34 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
-      containerTemplate {
-        name 'alpine'
-        image 'alpine:latest'
-        ttyEnabled true
-        command 'cat'
-      }
     }
   }
 
   stages {
     // List ENV vars for easier debugging
     stage('Get ENV') {
-      steps {
-        container('alpine') {
-          script {
-            // sh 'printenv'
-            sh 'cat /etc/*-release'
+      agent {
+        kubernetes {
+          containerTemplate {
+            name 'alpine'
+            image 'alpine:latest'
+            ttyEnabled true
+            command 'cat'
           }
+        }
+      }
+      steps {
+        script {
+          // sh 'printenv'
+          sh 'cat /etc/*-release'
         }
       }
     }
 
     stage('BuildProps') {
       steps {
-        container('gcloud') {
-          script {
-            buildProps = dataeng.createBuildProps()
-          }
+        script {
+          buildProps = dataeng.createBuildProps()
         }
       }
     }
