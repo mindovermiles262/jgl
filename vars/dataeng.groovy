@@ -48,8 +48,9 @@ def createBuildProps() {
   buildProps.slackNotifyChannel = '#dataeng-alerts'
   buildProps.currentYear = "${year}"
   buildProps.nextRelease = "${currentWeekNumber}"
-  // buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket/logs/'
-  buildProps.cloudBuildLogsBucket = 'gs://z-tp-2-build-logs/build-logs/'
+  buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket/logs/'
+  // Testing cross-project permissions
+  // buildProps.cloudBuildLogsBucket = 'gs://z-tp-2-build-logs/build-logs/'
 
   // branch specific props
   if (buildProps.branch ==~ /^(^master$)/) {
