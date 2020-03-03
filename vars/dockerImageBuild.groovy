@@ -34,8 +34,10 @@ pipeline {
 
     stage('BuildProps') {
       steps {
-        script {
-          buildProps = dataeng.createBuildProps()
+        container('gcloud') {
+          script {
+            buildProps = dataeng.createBuildProps()
+          }
         }
       }
     }
