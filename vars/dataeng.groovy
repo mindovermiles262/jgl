@@ -29,15 +29,16 @@ def createBuildProps() {
   // * imageVersion
   // * targetGkeCluster
   // * targetGkeClusterZone
-  def buildPropsFileName = "buildProps.yaml"
-  if (fileExists(buildPropsFileName)) {
-    echo "[*] Reading buildProps.yaml"
-    buildProps = readYaml file: buildPropsFileName
-  } else {
-    echo "[*] Build Props does not exist"
-    sh "ls -l"
-    buildProps = [:]
-  }
+  // def buildPropsFileName = "buildProps.yaml"
+  // if (fileExists(buildPropsFileName)) {
+  //   echo "[*] Reading buildProps.yaml"
+  //   buildProps = readYaml file: buildPropsFileName
+  // } else {
+  //   echo "[*] Build Props does not exist"
+  //   sh "ls -l"
+  //   buildProps = [:]
+  // }
+  buildProps = [:]
 
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
