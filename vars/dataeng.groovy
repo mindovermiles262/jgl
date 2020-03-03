@@ -35,6 +35,8 @@ def createBuildProps() {
     echo "[*] Reading buildProps.yaml"
     buildProps = readYaml file: buildPropsFileName
   } else {
+    echo "[*] Build Props does not exist"
+    sh "ls -l"
     buildProps = [:]
   }
 
