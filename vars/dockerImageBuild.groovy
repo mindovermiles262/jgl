@@ -36,6 +36,9 @@ pipeline {
     stage('BuildProps') {
       steps {
         script {
+          echo "[*] Build Props"
+          ls -l
+          pwd
           buildProps = dataeng.createBuildProps()
         }
       }
