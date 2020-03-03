@@ -10,6 +10,12 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
+      containerTemplate {
+        name 'alpine'
+        image 'alpine:latest'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
 
@@ -17,8 +23,11 @@ pipeline {
     // List ENV vars for easier debugging
     stage('Get ENV') {
       steps {
-        script {
-          sh 'printenv'
+        container('alpine') {
+          script {
+            // sh 'printenv'
+            sh 'cat /etc/*-release'
+          }
         }
       }
     }
