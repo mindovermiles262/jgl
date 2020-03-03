@@ -85,8 +85,23 @@ def createBuildProps() {
   // def helm_values = readYaml file: "values-${buildProps.environment}.yaml"
   // buildProps.targetGkeCluster = helm_values.global.targetGkeCluster
   // buildProps.targetGkeClusterZone = helm_values.global.targetGkeClusterZone
+  
+  // Overwrite values with those in buildProps.yaml
+  def buildPropsFileName = "buildProps.yaml"
+  if (fileExists(buildPropsFileName)) {
+    echo "[*] Loading buildProps.yaml"
+    customProps = readYaml file: buildPropsFileName
+    buildProps = overwriteMap(buildProps, customProps)
+  }
 
   return buildProps
+}
+
+
+// Given two maps, append or overwrite the second into the first. Helper function.
+def overwriteMap(Map receptorMap, Map donorMap) {
+  donorMap.each{ entry -> receptorMap[entry.key] = entry.value }
+  return receptorMap
 }
 
 
