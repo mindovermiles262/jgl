@@ -37,6 +37,7 @@ pipeline {
     stage('BuildProps') {
       steps {
         script {
+          sh 'cat /etc/*-release'
           buildProps = dataeng.createBuildProps()
         }
       }
@@ -65,6 +66,7 @@ pipeline {
     stage('build') {
       steps {
         script {
+          sh 'cat /etc/*-release'
           dataeng.dockerImageBuild()
         }
       }
