@@ -29,15 +29,6 @@ def createBuildProps() {
   // * imageVersion
   // * targetGkeCluster
   // * targetGkeClusterZone
-  // def buildPropsFileName = "buildProps.yaml"
-  // if (fileExists(buildPropsFileName)) {
-  //   echo "[*] Reading buildProps.yaml"
-  //   buildProps = readYaml file: buildPropsFileName
-  // } else {
-  //   echo "[*] Build Props does not exist"
-  //   sh "ls -l"
-  //   buildProps = [:]
-  // }
   buildProps = [:]
 
   buildProps.emails = 'me@myself.com'
@@ -90,7 +81,7 @@ def createBuildProps() {
   // Overwrite values with those in buildProps.yaml
   def buildPropsFileName = "buildProps.yaml"
   if (fileExists(buildPropsFileName)) {
-    echo "[*] Loading buildProps.yaml"
+    echo "[*] Loading Props from ${buildPropsFileName}"
     customProps = readYaml file: buildPropsFileName
     buildProps = overwriteMap(buildProps, customProps)
   }
