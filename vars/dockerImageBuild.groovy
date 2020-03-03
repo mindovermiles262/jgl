@@ -41,6 +41,14 @@ pipeline {
       }
     }
 
+    stage('Print BuildProps') {
+      steps {
+        script {
+          buildProps.each { entry -> println "$entry.key => $entry.value" }
+        }
+      }
+    }
+
     // Runs 'make test' to execute unit testing. Add an optional map config
     // to dataeng.unitTest() to change default values.
     // stage('unit test') {
