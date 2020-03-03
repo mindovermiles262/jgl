@@ -29,14 +29,13 @@ def createBuildProps() {
   // * imageVersion
   // * targetGkeCluster
   // * targetGkeClusterZone
-  // def buildPropsFileName = "buildProps.yaml"
-  // def buildPropsFile = new File(buildPropsFileName)
-  // if (buildPropsFile.exists()) {
-  //   buildProps = readYaml file: buildPropsFileName
-  // } else {
-  //   buildProps = [:]
-  // }
-  buildProps = [:]
+  def buildPropsFileName = "buildProps.yaml"
+  def buildPropsFile = new File(buildPropsFileName)
+  if (buildPropsFile.exists()) {
+    buildProps = readYaml file: buildPropsFileName
+  } else {
+    buildProps = [:]
+  }
 
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
@@ -70,10 +69,10 @@ def createBuildProps() {
   // don't bomb if imageVersion isn't set from local config, use env.BUILD_NUMBER instead
   if (buildProps.imageVersion) {
     buildProps.imageTag = buildProps.imageVersion + buildProps.imageReleaseState
-    buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
+    buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   } else {
     buildProps.imageTag = buildProps.buildNumber + buildProps.imageReleaseState
-    buildProps.containerImageName = "gcr.io/${ buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
+    buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
   }
 
   // helm specific props

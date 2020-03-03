@@ -28,8 +28,7 @@ pipeline {
       }
       steps {
         script {
-          // sh 'printenv'
-          sh 'cat /etc/*-release'
+          sh 'printenv'
         }
       }
     }
@@ -37,7 +36,6 @@ pipeline {
     stage('BuildProps') {
       steps {
         script {
-          sh 'cat /etc/*-release'
           buildProps = dataeng.createBuildProps()
         }
       }
@@ -66,7 +64,6 @@ pipeline {
     stage('build') {
       steps {
         script {
-          sh 'cat /etc/*-release'
           dataeng.dockerImageBuild()
         }
       }
