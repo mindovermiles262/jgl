@@ -32,6 +32,7 @@ def createBuildProps() {
   def buildPropsFileName = "buildProps.yaml"
   def buildPropsFile = new File(buildPropsFileName)
   if (buildPropsFile.exists()) {
+    echo "[*] Reading buildProps.yaml"
     buildProps = readYaml file: buildPropsFileName
   } else {
     buildProps = [:]
