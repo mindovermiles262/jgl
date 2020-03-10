@@ -78,14 +78,21 @@ def createBuildProps() {
   // Overwrite values with those in buildProps.yaml
   def buildPropsFileName = "buildProps.yaml"
   if (fileExists(buildPropsFileName)) {
-    echo "[*] Loading Props from ${buildPropsFileName}"
+    echo "[*] Loading build props from ${buildPropsFileName}"
     customProps = readYaml file: buildPropsFileName
     buildProps = overwriteMap(buildProps, customProps)
   }
-  
-  // Compound buildProps must go last so overwritten props are used
+
+  // Compound buildProps must go last so overwritten buildProps are interpolated
+  if (buildProps.imageVersion) {
+    buildProps.imageTag = buildProps.imageVersion + buildProps.imageReleaseState
+  } else {
+    buildProps.imageTag = buildProps.buildNumber + buildProps.imageReleaseState
+  }
+  buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectIdProd}/${buildProps.repoName}:${buildProps.imageTag}"
+  buildProps.containerImageLatest = "gcr.io/${buildProps.gcpProjectIdProd}/${buildProps.repoName}:latest"
   buildProps.gcpKeyFile = credentials("${buildProps.gcpCredentialsId}")
-  buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectId}/${buildProps.repoName}:${buildProps.imageTag}"
+
 
   return buildProps
 }
@@ -231,7 +238,7 @@ def gcloudAuth() {
   }
 }
 
-def tagBbRepo(String tag = buildProps.containerImageName) {
+def tagBbRepo(String tag = buildProps.imageTag) {
   // Tags repo with docker image name, pushes to BitBucket
   sh """
     git config user.email "jenkins-gcp-noreply@zoro.com"
