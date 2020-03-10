@@ -37,7 +37,7 @@ def createBuildProps() {
   buildProps.nextRelease = "${currentWeekNumber}"
   buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket/logs/'
   buildProps.bbOrgPath = "bitbucket.org:443/myrepo/"
-  buildProps.bbServiceAccount = credentials("bb-service-user-pass")
+  buildProps.bbSvcId = "bb-service-user-pass"
   
   // environment specific "named" properties so they can be referenced explicitly
   // dev
@@ -243,7 +243,7 @@ def gcloudAuth() {
 
 def tagBbRepo(String tag = buildProps.imageTag) {
   withCredentials([usernameColonPassword(
-    credentialsId: buildProps.bbServiceAccount, variable: 'USERPASS')]) {
+    credentialsId: buildProps.bbSvcId, variable: 'USERPASS')]) {
       // Tags repo with docker image name, pushes to BitBucket
       sh """
         git config user.email "jenkins-gcp-noreply@zoro.com"
