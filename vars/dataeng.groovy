@@ -253,7 +253,9 @@ def tagBbRepo(String tag = buildProps.imageTag) {
   // Pushes to new bitbucket branch (named same as container image)
   def bbRepoUrl = "https://" + buildProps.bbServiceAccount + "@" \
     + buildProps.bbOrgPath + buildProps.repoName + ".git"
-
+  
+  def creds = echo credentials('bb-service-user-pass')
+  echo "[*] Credentials => ${creds}"
   echo "[*] bbRepoUrl => ${bbRepoUrl}"
 }
 
