@@ -245,15 +245,14 @@ def tagBbRepo(String tag = buildProps.imageTag) {
     git config user.email "jenkins-gcp-noreply@zoro.com"
     git config user.name "GCP Jenkins"
 
-    git tag -af ${tag} -m 'Docker Image Build Commit'
+    # git tag -af ${tag} -m 'Docker Image Build Commit'
   """
 
   // Pushes to new bitbucket branch (named same as container image)
   def bbRepoUrl = "https://" + buildProps.bbServiceAccount + "@" \
     + buildProps.bbOrgPath + buildProps.repoName + ".git"
-  sh """
-    git push ${bbRepoUrl} ${tag} --force
-  """
+
+  echo "[*] bbRepoUrl => ${bbRepoUrl}"
 }
 
 

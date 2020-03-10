@@ -33,13 +33,13 @@ pipeline {
     //   }
     // }
 
-    stage('Env') {
-      steps {
-        script {
-          sh "printenv"
-        }
-      }
-    }
+    // stage('Env') {
+    //   steps {
+    //     script {
+    //       sh "printenv"
+    //     }
+    //   }
+    // }
 
     stage('BuildProps') {
       steps {
@@ -82,6 +82,14 @@ pipeline {
         script {
           // dataeng.dockerImageBuild()
           echo "[*] Inside Build Step"
+        }
+      }
+    }
+
+    stage('tag') {
+      steps {
+        script {
+          dataeng.tagBbRepo()
         }
       }
     }
