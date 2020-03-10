@@ -33,7 +33,7 @@ def createBuildProps() {
 
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
-  buildProps.repoName = buildProps['jobPath'][..-2]
+  buildProps.repoName = buildProps['jobPath'][-2]
   buildProps.branch = env.GIT_BRANCH
   buildProps.commit = env.GIT_COMMIT[-6..-1]
   buildProps.buildNumber = env.BUILD_NUMBER
