@@ -242,21 +242,22 @@ def gcloudAuth() {
 }
 
 def tagBbRepo(String tag = buildProps.imageTag) {
-  // Tags repo with docker image name, pushes to BitBucket
-  sh """
-    git config user.email "jenkins-gcp-noreply@zoro.com"
-    git config user.name "GCP Jenkins"
+  withCredentials([usernameColonPassword(
+    credentialsId: buildProps.bbServiceAccount, variable: 'USERPASS')]) {
+      // Tags repo with docker image name, pushes to BitBucket
+      sh """
+        git config user.email "jenkins-gcp-noreply@zoro.com"
+        git config user.name "GCP Jenkins"
 
-    # git tag -af ${tag} -m 'Docker Image Build Commit'
-  """
+        # git tag -af ${tag} -m 'Docker Image Build Commit'
+      """
 
-  // Pushes to new bitbucket branch (named same as container image)
-  def bbRepoUrl = "https://" + buildProps.bbServiceAccount + "@" \
-    + buildProps.bbOrgPath + buildProps.repoName + ".git"
-  
-  def creds = echo credentials('bb-service-user-pass')
-  echo "[*] Credentials => ${creds}"
-  echo "[*] bbRepoUrl => ${bbRepoUrl}"
+      // Pushes to new bitbucket branch (named same as container image)
+      def bbRepoUrl = "https://" + USERPASS + "@" \
+        + buildProps.bbOrgPath + buildProps.repoName + ".git"
+      
+      echo "[*] bbRepoUrl => ${bbRepoUrl}"
+  }
 }
 
 
