@@ -36,6 +36,8 @@ def createBuildProps() {
   buildProps.currentYear = "${year}"
   buildProps.nextRelease = "${currentWeekNumber}"
   buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket/logs/'
+  buildProps.bbOrgPath = "bitbucket.org:443/myrepo/"
+  buildProps.bbServiceAccount = credentials("bb-service-user-pass")
   
   // environment specific "named" properties so they can be referenced explicitly
   // dev
