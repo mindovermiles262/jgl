@@ -33,6 +33,14 @@ pipeline {
     //   }
     // }
 
+    stage('Env') {
+      steps {
+        script {
+          sh "printenv"
+        }
+      }
+    }
+
     stage('BuildProps') {
       steps {
         script {

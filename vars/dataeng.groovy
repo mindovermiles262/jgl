@@ -33,7 +33,7 @@ def createBuildProps() {
 
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
-  buildProps.repoName = buildProps['jobPath'][-2]
+  buildProps.repoName = buildProps['jobPath'][..-2]
   buildProps.branch = env.GIT_BRANCH
   buildProps.commit = env.GIT_COMMIT[-6..-1]
   buildProps.buildNumber = env.BUILD_NUMBER
@@ -230,6 +230,24 @@ def gcloudAuth() {
     """
   }
 }
+
+def tagBbRepo(String tag = buildProps.containerImageName) {
+  // Tags repo with docker image name, pushes to BitBucket
+  sh """
+    git config user.email "jenkins-gcp-noreply@zoro.com"
+    git config user.name "GCP Jenkins"
+
+    git tag -af ${tag} -m 'Docker Image Build Commit'
+  """
+
+  // Pushes to new bitbucket branch (named same as container image)
+  def bbRepoUrl = "https://" + buildProps.bbServiceAccount + "@" \
+    + buildProps.bbOrgPath + buildProps.repoName + ".git"
+  sh """
+    git push ${bbRepoUrl} ${tag} --force
+  """
+}
+
 
 def dockerImageBuild() {
   gcloudAuth()
