@@ -24,13 +24,7 @@ def createBuildProps() {
       currentWeekNumber = "0" + (weekNumber)
   }
 
-  // create the initial map from the local buildProps.yaml file if it exists
-  // we assume the following properties come from buildProps.yaml:
-  // * imageVersion
-  // * targetGkeCluster
-  // * targetGkeClusterZone
   buildProps = [:]
-
   buildProps.emails = 'me@myself.com'
   buildProps.jobPath = env.JOB_NAME.split('/')
   buildProps.repoName = buildProps['jobPath'][-2]
@@ -42,40 +36,48 @@ def createBuildProps() {
   buildProps.currentYear = "${year}"
   buildProps.nextRelease = "${currentWeekNumber}"
   buildProps.cloudBuildLogsBucket = 'gs://aduss-kubicia-cloud-build-bucket/logs/'
-  // Testing cross-project permissions
-  // buildProps.cloudBuildLogsBucket = 'gs://z-tp-2-build-logs/build-logs/'
+  
+  // environment specific "named" properties so they can be referenced explicitly
+  // dev
+  buildProps.gcpCredentialsIdDev = 'svc-aduss-kubicia-cloudbuilder'
+  buildProps.gcpProjectIdDev = 'aduss-kubicia'
+  // prod
+  buildProps.gcpCredentialsIdProd = 'svc-aduss-kubicia-cloudbuilder'
+  buildProps.gcpProjectIdProd = 'aduss-kubicia'
+  
 
   // branch specific props
   if (buildProps.branch ==~ /^(^master$)/) {
     buildProps.environment = 'prod'
     buildProps.gcpProjectId = 'aduss-kubicia'
-    buildProps.gcpCredentialsId = 'svc-aduss-kubicia-cloudbuilder'
+    buildProps.gcpCredentialsId = buildProps.gcpCredentialsIdProd
     buildProps.imageReleaseState = ''
 
   } else {
     buildProps.environment = 'dev'
     buildProps.gcpProjectId = 'aduss-kubicia'
-    buildProps.gcpCredentialsId = 'svc-aduss-kubicia-cloudbuilder'
+    buildProps.gcpCredentialsId = buildProps.gcpCredentialsIdDev
     buildProps.imageReleaseState = "-beta"
-  }
-
-  // container specific props
-  // don't bomb if imageVersion isn't set from local config, use env.BUILD_NUMBER instead
-  if (buildProps.imageVersion) {
-    buildProps.imageTag = buildProps.imageVersion + buildProps.imageReleaseState
-  } else {
-    buildProps.imageTag = buildProps.buildNumber + buildProps.imageReleaseState
   }
 
   // helm specific props
   buildProps.helmReleaseName = buildProps.repoName
 
   // grab some needed information from our helm values file for the current environment
-  // def helm_values = readYaml file: "values-${buildProps.environment}.yaml"
-  // buildProps.targetGkeCluster = helm_values.global.targetGkeCluster
-  // buildProps.targetGkeClusterZone = helm_values.global.targetGkeClusterZone
-  
-  // Overwrite values with those in buildProps.yaml
+  // We assume the following properties come from values-[ENV].yaml:
+  //   * targetGkeCluster
+  //   * targetGkeClusterZone
+  def valuesFile = "values-${buildProps.environment}.yaml"
+  if (fileExists(valuesFile)) {
+    def helm_values = readYaml file: valuesFile
+    buildProps.targetGkeCluster = helm_values.global.targetGkeCluster
+    buildProps.targetGkeClusterZone = helm_values.global.targetGkeClusterZone
+    buildProps.clusterNamespace = helm_values.global.clusterNamespace
+  }
+
+  // Overwrite any values from buildProps.yaml
+  // We assume the following properties come from buildProps.yaml:
+  //   * imageVersion
   def buildPropsFileName = "buildProps.yaml"
   if (fileExists(buildPropsFileName)) {
     echo "[*] Loading build props from ${buildPropsFileName}"
@@ -92,7 +94,6 @@ def createBuildProps() {
   buildProps.containerImageName = "gcr.io/${buildProps.gcpProjectIdProd}/${buildProps.repoName}:${buildProps.imageTag}"
   buildProps.containerImageLatest = "gcr.io/${buildProps.gcpProjectIdProd}/${buildProps.repoName}:latest"
   buildProps.gcpKeyFile = credentials("${buildProps.gcpCredentialsId}")
-
 
   return buildProps
 }
